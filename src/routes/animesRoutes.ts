@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { v7 as uuidv7 } from 'uuid';
 import db from "../db/knexfile";
 
 const router = express.Router();
@@ -6,7 +7,6 @@ const router = express.Router();
 
 //ROTA PARA ACESSAR TODOS OS ANIMES
 router.get('/', async (req, res) => {
-  console.log("Rota /anime acessada - Método GET");
   try {
     const anime = await db("animes").select("*");
     res.status(200).json(anime);
@@ -22,14 +22,17 @@ router.post('/', async (req: Request, res: Response) => {
   try{
   const { titulo,sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url } = req.body;
 
-  console.log("Rota /anime acessada - Método POST");
-
   if (! titulo || !sinopse || !genero || !numero_episodios || !status || !ano_lancamento || !imagem_url) {
-     res.status(401);
+     res.status(400);
     throw new Error("Dados do anime incompletos")
   }
-    const newAnime = await db("animes").insert({ titulo,sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url }).returning("*");
-    res.status(201).json(newAnime);
+  const id = uuidv7();
+
+    const newAnime = await db("animes")
+      .insert({ id, titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url })
+      .returning("*");
+      res.status(201).json(newAnime);
+
   } catch (error:any) {
     const message = error.sqlMessage || error.message
     res.json(message);

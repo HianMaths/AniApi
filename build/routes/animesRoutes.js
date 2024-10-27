@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const uuid_1 = require("uuid");
 const knexfile_1 = __importDefault(require("../db/knexfile"));
 const router = express_1.default.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Rota /anime acessada - Método GET");
     try {
         const anime = yield (0, knexfile_1.default)("animes").select("*");
         res.status(200).json(anime);
@@ -27,18 +27,21 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url } = req.body;
-    console.log("Rota /anime acessada - Método POST");
-    if (!titulo || !sinopse || !genero || !numero_episodios || !status || !ano_lancamento || !imagem_url) {
-        res.status(400).json({ error: "Dados do anime incompletos" });
-    }
     try {
-        const newAnime = yield (0, knexfile_1.default)("animes").insert({ titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url }).returning("*");
+        const { titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url } = req.body;
+        if (!titulo || !sinopse || !genero || !numero_episodios || !status || !ano_lancamento || !imagem_url) {
+            res.status(400);
+            throw new Error("Dados do anime incompletos");
+        }
+        const id = (0, uuid_1.v7)();
+        const newAnime = yield (0, knexfile_1.default)("animes")
+            .insert({ id, titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url })
+            .returning("*");
         res.status(201).json(newAnime);
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erro ao adicionar anime" });
+        const message = error.sqlMessage || error.message;
+        res.json(message);
     }
 }));
 router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
