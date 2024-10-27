@@ -19,11 +19,15 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const anime = yield (0, knexfile_1.default)("animes").select("*");
+        if (anime.length === 0) {
+            res.status(404);
+            throw new Error("Nenhum anime foi encontrado.");
+        }
         res.status(200).json(anime);
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erro ao buscar animes" });
+        const message = error.sqlMessage || error.message;
+        res.json(message);
     }
 }));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

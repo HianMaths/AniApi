@@ -9,10 +9,14 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const anime = await db("animes").select("*");
-    res.status(200).json(anime);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erro ao buscar animes" });
+    if (anime.length === 0) {
+      res.status(404);
+      throw new Error("Nenhum anime foi encontrado.")
+    }
+      res.status(200).json(anime);
+  } catch (error:any) {
+    const message = error.sqlMessage || error.message
+    res.json(message);
   }
 });
 
