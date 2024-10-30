@@ -72,21 +72,19 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 //ROTA PARA DELETAR UM ANIME PELO SEU ID
 router.delete("/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  console.log(`Rota /anime/${id} acessada - Método DELETE`);
-
   try {
+    const { id } = req.params;
     const deletedAnime = await db("animes").where({ id }).del();
 
-    if (deletedAnime) {
-      res.status(200).json({ success: "Anime deletado com sucesso." });
-    } else {
-      res.status(404).json({ error: "Anime não encontrado" });
+    if (!deletedAnime) {
+      res.status(404);
+      throw new Error("Anime não encontrado");
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erro ao remover anime" });
+
+    res.status(200).json( "Anime deletado com sucesso." );
+  } catch (error: any) {
+    const message = error.sqlMessage || error.message;
+    res.json(message);
   }
 });
 export default router;

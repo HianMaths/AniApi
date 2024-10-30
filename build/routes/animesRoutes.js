@@ -70,20 +70,18 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 }));
 router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    console.log(`Rota /anime/${id} acessada - Método DELETE`);
     try {
+        const { id } = req.params;
         const deletedAnime = yield (0, knexfile_1.default)("animes").where({ id }).del();
-        if (deletedAnime) {
-            res.status(200).json({ success: "Anime deletado com sucesso." });
+        if (!deletedAnime) {
+            res.status(404);
+            throw new Error("Anime não encontrado");
         }
-        else {
-            res.status(404).json({ error: "Anime não encontrado" });
-        }
+        res.status(200).json("Anime deletado com sucesso.");
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erro ao remover anime" });
+        const message = error.sqlMessage || error.message;
+        res.json(message);
     }
 }));
 exports.default = router;
