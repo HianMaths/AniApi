@@ -84,18 +84,16 @@ router.put("/:id", async (req: Request, res: Response) => {
 });
 
 // Método para buscar episódios
-router.get("/episodio/:episodioId", async (req: Request, res: Response) => {
+router.get("/anime/:animeId", async (req: Request, res: Response) => {
   try {
-    const { episodioId } = req.params;
+    const { animeId } = req.params;
 
-    const episodioExists = await db("episodios")
-      .where({ id: episodioId })
-      .first();
-    if (!episodioExists) {
-      res.status(404).json({ message: "Episódio não encontrado." });
+    const animeExists = await db("animes").where({ id: animeId }).first();
+    if (!animeExists) {
+      res.status(404).json({ message: "Anime não encontrado." });
     }
 
-    const episodios = await db("episodios").where({ episodio_id: episodioId });
+    const episodios = await db("episodios").where({ anime_id: animeId });
 
     res.status(200).json(episodios);
   } catch (error: any) {
