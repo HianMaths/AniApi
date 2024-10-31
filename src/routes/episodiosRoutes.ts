@@ -104,4 +104,24 @@ router.get("/anime/:animeId", async (req: Request, res: Response) => {
   }
 });
 
+// Método delete
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const episodio = await db("episodios").where({ id }).first();
+    if (!episodio) {
+      res.status(404).json({ message: "Episódio não encontrado." });
+    }
+
+    await db("episodios").where({ id }).del();
+
+    res.status(200).json({ message: "Episódio deletado com sucesso." });
+  } catch (error: any) {
+    console.error("Erro ao deletar episódio:", error);
+    res
+      .status(500)
+      .json({ message: error.message || "Erro interno do servidor." });
+  }
+});
+
 export default router;
