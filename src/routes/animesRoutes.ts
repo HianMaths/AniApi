@@ -4,7 +4,36 @@ import db from "../db/knexfile";
 
 const router = express.Router();
 
-//ROTA PARA ACESSAR TODOS OS ANIMES
+router.get("/search", async (req: Request, res: Response) => {
+  try {
+    const { genero, titulo, ano } = req.query;
+
+    let query = db("animes").select("*");
+
+    if (genero) {
+      query = query.whereRaw('? = ANY(genero)', [genero as string]);
+    }
+    if (titulo) {
+      query = query.where("titulo", "ilike", `%${titulo}%`);
+    }
+    if (ano) {
+      query = query.where("ano_lancamento", Number(ano));
+    }
+
+    const animes = await query;
+
+    if (animes.length === 0) {
+      res.status(404);
+      throw new Error("Nenhum anime foi encontrado.");
+    }
+    res.status(200).json(animes);
+
+  } catch (error: any) {
+    const message = error.sqlMessage || error.message;
+    res.json(message);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const anime = await db("animes").select("*");
@@ -19,7 +48,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-//ROTA PARA ADICIONAR UM NOVO ANIME
 router.post("/", async (req: Request, res: Response) => {
   try {
     const {
@@ -52,7 +80,6 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-//ROTA QUE BUSCA UM ANIME PELO SEU ID
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -70,7 +97,6 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-//ROTA PARA DELETAR UM ANIME PELO SEU ID
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

@@ -16,6 +16,31 @@ const express_1 = __importDefault(require("express"));
 const uuid_1 = require("uuid");
 const knexfile_1 = __importDefault(require("../db/knexfile"));
 const router = express_1.default.Router();
+router.get("/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { genero, titulo, ano } = req.query;
+        let query = (0, knexfile_1.default)("animes").select("*");
+        if (genero) {
+            query = query.whereRaw('? = ANY(genero)', [genero]);
+        }
+        if (titulo) {
+            query = query.where("titulo", "ilike", `%${titulo}%`);
+        }
+        if (ano) {
+            query = query.where("ano_lancamento", Number(ano));
+        }
+        const animes = yield query;
+        if (animes.length === 0) {
+            res.status(404);
+            throw new Error("Nenhum anime foi encontrado.");
+        }
+        res.status(200).json(animes);
+    }
+    catch (error) {
+        const message = error.sqlMessage || error.message;
+        res.json(message);
+    }
+}));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const anime = yield (0, knexfile_1.default)("animes").select("*");
