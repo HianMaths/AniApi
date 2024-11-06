@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { v7 as uuidv7 } from "uuid";
 import db from "../db/knexfile";
+import { buscarAnimePorId } from "../dataApi/animeData";
 
 const router = express.Router();
 
@@ -9,10 +10,15 @@ router.post("/:animeId", async (req: Request, res: Response) => {
   const { titulo, descricao, numero } = req.body;
 
   try {
-    const animeExists = await db("animes").where({ id: animeId }).first();
+    if(!titulo || !descricao || !numero){
+      res.status(400);
+      throw new Error("Dados faltantes")
+    }
+    const animeExists = await buscarAnimePorId(animeId);
 
     if (!animeExists) {
-      res.status(404).json({ message: "Anime não encontrado." });
+      res.status(404)
+      throw Error("Anime não encontrado.");
     }
 
     const id = uuidv7();
@@ -30,11 +36,10 @@ router.post("/:animeId", async (req: Request, res: Response) => {
       message: "Episódio adicionado com sucesso.",
       episodio: novoEpisodio[0],
     });
+    
   } catch (error: any) {
-    console.error("Erro ao adicionar episódio:", error);
-    res
-      .status(500)
-      .json({ message: error.message || "Erro interno do servidor." });
+    const message = error.sqlMessage || error.Message || "Erro interno do servidor."
+    res.send(message);
   }
 });
 
