@@ -62,4 +62,31 @@ router.post("/:animeId", async (req: Request, res: Response) => {
   }
 });
 
+// Rota para atualizar personagem
+router.put("/:id/personagens", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { nome, descricao, imagem_url } = req.body;
+    if (!nome && !descricao && !imagem_url) {
+      res
+        .status(400)
+        .json({ error: "Nenhum campo para atualização foi fornecido." });
+    }
+    const updatedPersonagem = await db("personagens")
+      .where({ id })
+      .update({
+        nome,
+        descricao,
+        imagem_url,
+      })
+      .returning("*");
+    if (updatedPersonagem.length === 0) {
+      res.status(404).json({ error: "Personagem não encontrado." });
+    }
+    res.status(200).json(updatedPersonagem[0]);
+  } catch (error: any) {
+    res.status(500).json({ error: error.sqlMessage || error.message });
+  }
+});
+
 export default router;
