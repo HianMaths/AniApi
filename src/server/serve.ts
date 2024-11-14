@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import animeRoutes from '../routes/animesRoutes';
 import episodiosRoutes from '../routes/episodiosRoutes';
+import personagensRoutes from '../routes/personagensRoutes';
 
 const app = express();
 const port = 3000;
@@ -17,7 +18,7 @@ app.use('/anime', animeRoutes);
 app.use('/episodios', episodiosRoutes);
 
 //ROTAS PARA OS PERSONAGENS
-//app.use();
+app.use('/personagens', personagensRoutes);
  
  
 
