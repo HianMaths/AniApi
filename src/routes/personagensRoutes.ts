@@ -89,4 +89,20 @@ router.put("/:id/personagens", async (req: Request, res: Response) => {
   }
 });
 
+// Rota para deletar personagem
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedPersonagem = await db("personagens").where({ id }).del();
+    if (!deletedPersonagem) {
+      res.status(404);
+      throw new Error("Personagem não encontrado.");
+    }
+    res.status(200).json("Personagem deletado com sucesso.");
+  } catch (error: any) {
+    const message = error.sqlMessage || error.message;
+    res.json(message);
+  }
+});
+
 export default router;
