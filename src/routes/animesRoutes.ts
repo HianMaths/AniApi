@@ -11,7 +11,7 @@ router.get("/search", async (req: Request, res: Response) => {
     let query = db("animes").select("*");
 
     if (genero) {
-      query = query.whereRaw('? = ANY(genero)', [genero as string]);
+      query = query.whereRaw("? = ANY(genero)", [genero as string]);
     }
     if (titulo) {
       query = query.where("titulo", "ilike", `%${titulo}%`);
@@ -27,7 +27,6 @@ router.get("/search", async (req: Request, res: Response) => {
       throw new Error("Nenhum anime foi encontrado.");
     }
     res.status(200).json(animes);
-
   } catch (error: any) {
     const message = error.sqlMessage || error.message;
     res.json(message);
@@ -51,15 +50,23 @@ router.get("/", async (req, res) => {
 router.post("/", async (req: Request, res: Response) => {
   try {
     const {
-      titulo,sinopse,genero,
-      numero_episodios,status,
-      ano_lancamento,imagem_url,
+      titulo,
+      sinopse,
+      genero,
+      numero_episodios,
+      status,
+      ano_lancamento,
+      imagem_url,
     } = req.body;
 
     if (
-      !titulo || !sinopse ||
-      !genero || !numero_episodios ||
-      !status || !ano_lancamento || !imagem_url
+      !titulo ||
+      !sinopse ||
+      !genero ||
+      !numero_episodios ||
+      !status ||
+      !ano_lancamento ||
+      !imagem_url
     ) {
       res.status(400);
       throw new Error("Dados do anime incompletos");
@@ -68,9 +75,14 @@ router.post("/", async (req: Request, res: Response) => {
 
     const newAnime = await db("animes")
       .insert({
-        id,titulo,sinopse,
-        genero,numero_episodios,status,
-        ano_lancamento,imagem_url
+        id,
+        titulo,
+        sinopse,
+        genero,
+        numero_episodios,
+        status,
+        ano_lancamento,
+        imagem_url,
       })
       .returning("*");
     res.status(201).json(newAnime);
@@ -107,7 +119,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
       throw new Error("Anime não encontrado");
     }
 
-    res.status(200).json( "Anime deletado com sucesso." );
+    res.status(200).json("Anime deletado com sucesso.");
   } catch (error: any) {
     const message = error.sqlMessage || error.message;
     res.json(message);
