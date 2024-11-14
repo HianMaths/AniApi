@@ -35,4 +35,31 @@ router.get("/:animeId/personagens", async (req, res) => {
   }
 });
 
+// Rota para criar um personagem
+import { v7 as uuidv7 } from "uuid";
+router.post("/:animeId", async (req: Request, res: Response) => {
+  try {
+    const { animeId } = req.params;
+    const { nome, descricao, imagem_url } = req.body;
+    if (!nome || !descricao || !imagem_url) {
+      res.status(404);
+      throw new Error("Os dados do personagem estão incompletos");
+    }
+    const id = uuidv7();
+    const newPersonagem = await db("personagens")
+      .insert({
+        id,
+        nome,
+        descricao,
+        imagem_url,
+        anime_id: animeId,
+      })
+      .returning("*");
+    res.status(201).json(newPersonagem);
+  } catch (error: any) {
+    const message = error.sqlMessage || error.message;
+    res.json(message);
+  }
+});
+
 export default router;
