@@ -21,7 +21,7 @@ router.get("/search", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { genero, titulo, ano } = req.query;
         let query = (0, knexfile_1.default)("animes").select("*");
         if (genero) {
-            query = query.whereRaw('? = ANY(genero)', [genero]);
+            query = query.whereRaw("? = ANY(genero)", [genero]);
         }
         if (titulo) {
             query = query.where("titulo", "ilike", `%${titulo}%`);
@@ -58,18 +58,27 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url, } = req.body;
-        if (!titulo || !sinopse ||
-            !genero || !numero_episodios ||
-            !status || !ano_lancamento || !imagem_url) {
+        if (!titulo ||
+            !sinopse ||
+            !genero ||
+            !numero_episodios ||
+            !status ||
+            !ano_lancamento ||
+            !imagem_url) {
             res.status(400);
             throw new Error("Dados do anime incompletos");
         }
         const id = (0, uuid_1.v7)();
         const newAnime = yield (0, knexfile_1.default)("animes")
             .insert({
-            id, titulo, sinopse,
-            genero, numero_episodios, status,
-            ano_lancamento, imagem_url
+            id,
+            titulo,
+            sinopse,
+            genero,
+            numero_episodios,
+            status,
+            ano_lancamento,
+            imagem_url,
         })
             .returning("*");
         res.status(201).json(newAnime);
