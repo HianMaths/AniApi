@@ -6,7 +6,7 @@ import {
   deleteAnimeService,
   buscarAnimesService,
   atualizarAnimeService,
-} from "../services/animeService";
+} from "../services/animeServie";
 
 export const getAllAnimes = async (req: Request, res: Response) => {
   try {

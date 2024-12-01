@@ -1,122 +1,16 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const uuid_1 = require("uuid");
-const knexfile_1 = __importDefault(require("../db/knexfile"));
+const animeController_1 = require("../controllers/animeController");
 const router = express_1.default.Router();
-router.get("/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { genero, titulo, ano } = req.query;
-        let query = (0, knexfile_1.default)("animes").select("*");
-        if (genero) {
-            query = query.whereRaw("? = ANY(genero)", [genero]);
-        }
-        if (titulo) {
-            query = query.where("titulo", "ilike", `%${titulo}%`);
-        }
-        if (ano) {
-            query = query.where("ano_lancamento", Number(ano));
-        }
-        const animes = yield query;
-        if (animes.length === 0) {
-            res.status(404);
-            throw new Error("Nenhum anime foi encontrado.");
-        }
-        res.status(200).json(animes);
-    }
-    catch (error) {
-        const message = error.sqlMessage || error.message;
-        res.json(message);
-    }
-}));
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const anime = yield (0, knexfile_1.default)("animes").select("*");
-        if (anime.length === 0) {
-            res.status(404);
-            throw new Error("Nenhum anime foi encontrado.");
-        }
-        res.status(200).json(anime);
-    }
-    catch (error) {
-        const message = error.sqlMessage || error.message;
-        res.json(message);
-    }
-}));
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { titulo, sinopse, genero, numero_episodios, status, ano_lancamento, imagem_url, } = req.body;
-        if (!titulo ||
-            !sinopse ||
-            !genero ||
-            !numero_episodios ||
-            !status ||
-            !ano_lancamento ||
-            !imagem_url) {
-            res.status(400);
-            throw new Error("Dados do anime incompletos");
-        }
-        const id = (0, uuid_1.v7)();
-        const newAnime = yield (0, knexfile_1.default)("animes")
-            .insert({
-            id,
-            titulo,
-            sinopse,
-            genero,
-            numero_episodios,
-            status,
-            ano_lancamento,
-            imagem_url,
-        })
-            .returning("*");
-        res.status(201).json(newAnime);
-    }
-    catch (error) {
-        const message = error.sqlMessage || error.message;
-        res.json(message);
-    }
-}));
-router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const anime = yield (0, knexfile_1.default)("animes").where({ id }).first();
-        if (!anime) {
-            res.status(404);
-            throw new Error("Anime não encontrado.");
-        }
-        res.status(200).json(anime);
-    }
-    catch (error) {
-        const message = error.sqlMessage || error.message;
-        res.json(message);
-    }
-}));
-router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const deletedAnime = yield (0, knexfile_1.default)("animes").where({ id }).del();
-        if (!deletedAnime) {
-            res.status(404);
-            throw new Error("Anime não encontrado");
-        }
-        res.status(200).json("Anime deletado com sucesso.");
-    }
-    catch (error) {
-        const message = error.sqlMessage || error.message;
-        res.json(message);
-    }
-}));
+router.get("/", animeController_1.getAllAnimes);
+router.get("/search", animeController_1.buscarAnimes);
+router.post("/", animeController_1.createAnime);
+router.put("/:id", animeController_1.atualizarAnime);
+router.get("/:id", animeController_1.getAnimeById);
+router.delete("/:id", animeController_1.deleteAnime);
 exports.default = router;
 //# sourceMappingURL=animesRoutes.js.map
