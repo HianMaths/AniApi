@@ -6,7 +6,7 @@ import {
   atualizarPersonagem,
   deletarPersonagem,
   buscarPersonagens,
-} from "../controllers/personagensController";
+} from "../controllers/personagemController";
 
 const router = express.Router();
 
