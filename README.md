@@ -1,5 +1,5 @@
 # AniApi
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)   ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)     ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)   ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)     ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)    ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
 
 A AniApi é uma API que se dedica à gestão dos dados relativos à animes, episódios e personagens. Ela fornece uma interface completa usada para acessar, manipular e mostrar dados detalhados dos animes, incluindo dados sobre seus episódios e seus personagens principais, caso ainda tenha alguma duvida em relação aos seus métodos, abaixo estara um link que leva para a documentação da api no Postman com todos os seus endpoints devidamente explicados.
@@ -11,6 +11,37 @@ Seu banco de dados foi criado pensando em praticidade e facilidade de seu uso e 
 
 # Variaveis de Ambiente
 Em nosso projeto também contamos com um arquivo .env.example para definir as variaveis de ambiente necessarias para fazer a conexão com o nosso Banco de Dados (AnimeDB).
+
+# Composição de pastas
+Este projeto é organizado da seguinte forma:
+
+````
+
+src/
+├── controllers/     # Lógica para manipulação de requisições e respostas
+│   ├── animeController.ts      # Controlador para animes
+│   ├── episodioController.ts   # Controlador para episódios
+│   └── personagemController.ts # Controlador para personagens
+├── dataApi/         # Dados consumidos pela API
+│   ├── animeData.ts           # Dados e funções relacionadas aos animes
+│   ├── episodioData.ts        # Dados e funções relacionadas aos episódios
+│   └── personagemData.ts      # Dados e funções relacionadas aos personagens
+├── db/              # Configuração e modelos do banco de dados
+│   └── knexfile.ts           # Configuração do Knex.js para conexão com o banco
+├── routes/          # Definição de rotas da API
+│   ├── animeRoutes.ts         # Rotas para animes
+│   ├── episodioRoutes.ts      # Rotas para episódios
+│   └── personagemRoutes.ts    # Rotas para personagens
+├── server/          # Configuração do servidor
+│   └── server.ts             # Inicialização do servidor (Express, etc.)
+├── services/        # Lógica de negócios e integração entre camadas
+│   ├── animeService.ts        # Lógica de negócio para animes
+│   ├── episodioService.ts     # Lógica de negócio para episódios
+│   └── personagemService.ts   # Lógica de negócio para personagens
+├── .env.example          # Exemplo de variáveis de ambiente
+└── AnimesDB.sql          # Arquivo SQL para inicialização ou backup do banco de dados
+       
+````
 
 # Como rodar o projeto
 Para rodar este projeto localmente, siga os passos abaixo:
