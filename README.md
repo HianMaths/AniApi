@@ -7,10 +7,21 @@ A AniApi é uma API que se dedica à gestão dos dados relativos à animes, epis
 https://documenter.getpostman.com/view/38010881/2sAYBYfVXN
 
 # Banco de Dados (PostgreSQL)
-Seu banco de dados foi criado pensando em praticidade e facilidade de seu uso e da implementação de novos recursos, contendo somente três tabelas referentes ao conteúdo presente na AniApi, seu script está presente no trabalho, caso tenha curiosidade de como foi feito e como suas tabelas estão ligadas umas às outras
+Seu banco de dados foi criado pensando em praticidade e facilidade de seu uso e da implementação de novos recursos, contendo somente três tabelas referentes ao conteúdo presente na AniApi, seu script está presente no trabalho, caso tenha curiosidade de como foi feito e como suas tabelas estão ligadas umas às outras.
 
 # Variáveis de Ambiente
 Em nosso projeto, também contamos com um arquivo .env.example para definir as variáveis de ambiente necessárias para a conexão com o nosso banco de dados (AnimeDB).
+````
+# Configurações do Banco de Dados
+DB_HOST=localhost            # Endereço do servidor do banco de dados
+DB_PORT=5432                 # Porta do banco de dados
+DB_USER=seu_usuario          # Nome do usuário do banco de dados
+DB_PASSWORD=sua_senha        # Senha do banco de dados
+DB_NAME=AnimeDB              # Nome do banco de dados
+````
+Renomeie o arquivo .env.example para .env.
+
+Substitua os valores de exemplo pelos valores reais do seu ambiente.
 
 # Composição de pastas
 Este projeto é organizado da seguinte forma:
