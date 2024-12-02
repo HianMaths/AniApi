@@ -61,11 +61,15 @@ Para rodar este projeto localmente, siga os passos abaixo:
    ```bash
    git clone https://github.com/HianMaths/AniApi.git
    ```
-2. Instale as dependências:
+   2. Caso tenha criado uma pasta onde clonou o resporitório:
+   ```bash
+    cd AniApi
+   ```
+3. Instale as dependências:
    ```bash
    npm install
    ```
-3. Inicie a aplicação: 
+4. Inicie a aplicação: 
    ```bash
    npm start
    ```
