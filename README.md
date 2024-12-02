@@ -2,15 +2,15 @@
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)   ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)     ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)    ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
 
-A AniApi é uma API que se dedica à gestão dos dados relativos à animes, episódios e personagens. Ela fornece uma interface completa usada para acessar, manipular e mostrar dados detalhados dos animes, incluindo dados sobre seus episódios e seus personagens principais, caso ainda tenha alguma duvida em relação aos seus métodos, abaixo estara um link que leva para a documentação da api no Postman com todos os seus endpoints devidamente explicados.
+A AniApi é uma API que se dedica à gestão dos dados relativos à animes, episódios e personagens. Ela fornece uma interface completa usada para acessar, manipular e mostrar dados detalhados dos animes, incluindo dados sobre seus episódios e seus personagens principais, caso ainda tenha alguma duvida em relação aos seus métodos, abaixo, estará um link que leva à documentação da API no Postman, com todos os seus endpoints devidamente explicados
 
 https://documenter.getpostman.com/view/38010881/2sAYBYfVXN
 
 # Banco de Dados (PostgreSQL)
-Seu banco de dados foi criado pensando em praticidade e facilidade de seu uso e da implementação de novos recursos, contendo somente três tabelas referentes ao conteudo presente na AniApi, seu script esta presente no trabalho caso tenha curiosidade de como ele foi feito e como suas tabelas estão ligadas umas as outras.
+Seu banco de dados foi criado pensando em praticidade e facilidade de seu uso e da implementação de novos recursos, contendo somente três tabelas referentes ao conteúdo presente na AniApi, seu script está presente no trabalho, caso tenha curiosidade de como foi feito e como suas tabelas estão ligadas umas às outras
 
-# Variaveis de Ambiente
-Em nosso projeto também contamos com um arquivo .env.example para definir as variaveis de ambiente necessarias para fazer a conexão com o nosso Banco de Dados (AnimeDB).
+# Variáveis de Ambiente
+Em nosso projeto, também contamos com um arquivo .env.example para definir as variáveis de ambiente necessárias para a conexão com o nosso banco de dados (AnimeDB).
 
 # Composição de pastas
 Este projeto é organizado da seguinte forma:
