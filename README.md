@@ -61,7 +61,7 @@ Para rodar este projeto localmente, siga os passos abaixo:
    ```bash
    git clone https://github.com/HianMaths/AniApi.git
    ```
-   2. Caso tenha criado uma pasta onde clonou o resporitório:
+2. Caso tenha criado uma pasta onde clonou o resporitório:
    ```bash
     cd AniApi
    ```
